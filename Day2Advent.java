@@ -9,8 +9,6 @@ public class Day2Advent {
 
         ArrayList<String> fileData = getFileData("src/Day2Input");
         System.out.println(findSafe(fileData));
-        ArrayList<String> test = new ArrayList<>();
-        test.add("1 2 7 8 9");
         System.out.println(dampener(fileData));
     }
 
@@ -91,8 +89,11 @@ public class Day2Advent {
     }
     public static boolean possibility(ArrayList<Integer> a)
     {
-        for(int i = 0; i < a.size() - 1; i++){
-            ArrayList<Integer> tester = a;
+        for(int i = 0; i < a.size(); i++){
+            ArrayList<Integer> tester = new ArrayList<>();
+            for(int j : a){
+                tester.add(j);
+            }
             tester.remove(i);
             ArrayList<Integer> difference = new ArrayList<>();
             for(int k = 0; k < tester.size()-1; k++){
