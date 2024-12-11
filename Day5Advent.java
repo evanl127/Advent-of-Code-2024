@@ -12,10 +12,11 @@ public class Day5Advent {
         ArrayList<String> orders = fileData.get(1);
         ArrayList<Integer> parameterInt = new ArrayList<>();
         for(String i : parameters){
-            String[] a = i.split("|");
+            String[] a = i.split("\\|");
             parameterInt.add(Integer.parseInt(a[0]));
             parameterInt.add(Integer.parseInt(a[1]));
         }
+        System.out.println(parameterInt + "\n" + orders);
         System.out.println(partOne(parameterInt,orders));
 
     }
@@ -50,30 +51,66 @@ public class Day5Advent {
             for(String j : noComma){
                 containNum.add(Integer.parseInt(j));
             }
-            boolean correct = true;
-            for(int k = 0; k < containNum.size(); k++){
-                int num = containNum.get(k);
-                for(int l = 0; l < a.size(); l++){
-                    if(a.get(l) == num){
-                        boolean even = checkEven(l);
-                        if(!even){
-                            int firstNum = a.get(l-1);
-                            if(containNum.contains(firstNum)){
-                                correct = false;
-                            }
-                        }
-                    }
-                }
-            }
-            if(correct){
-                total += containNum.get((containNum.size()-1) / 2);
-            }
+            if(checkNum(a,containNum))
+
+                total += containNum.get((containNum.size() - 1) / 2);
         }
         return total;
     }
-    public static boolean checkEven(int i){
-        if(i % 2 == 0)
-            return true;
+
+    public static boolean checkNum(ArrayList<Integer> a, ArrayList<Integer> b){
+        boolean correct = true;
+
+        for(int h = 0; h < b.size(); h++) {
+            for (int i = 0; i < a.size(); i++) {
+                if (a.get(i) == b.get(h)){
+                    if(i % 2 == 1){
+                        if(checkBefore(b, a.get(i - 1), b.get(h)))
+                            correct = false;
+                    }
+                    else if(i % 2 == 0){
+                        if(checkAfter(b,a.get(i + 1), b.get(h)))
+                            correct =false;
+                    }
+                }
+            }
+        }
+        return correct;
+    }
+    public static boolean checkBefore (ArrayList<Integer> a, int b, int c){
+        if(a.contains(b))
+            return (a.indexOf(b) > a.indexOf(c));
         return false;
+    }
+    public static boolean checkAfter (ArrayList<Integer> a, int b, int c){
+        if(a.contains(b))
+            return (a.indexOf(b) < a.indexOf(c));
+        return false;
+    }
+    public static int partTwo(ArrayList<Integer> a, ArrayList<String> b) {
+        int total = 0;
+        for (int i = 0; i < b.size(); i++) {
+            ArrayList<Integer> containNum = new ArrayList<>();
+            String order = b.get(i);
+            String[] noComma = order.split(",");
+            for (String j : noComma) {
+                containNum.add(Integer.parseInt(j));
+            }
+
+        }
+        return total;
+    }
+    public static ArrayList<Integer> orderRight(ArrayList<Integer> a, ArrayList<Integer> b){
+        for(int i = 0; i < b.size(); i++){
+            int c = b.get(i);
+            ArrayList<Integer> without = new ArrayList<>();
+            for(int h : b)
+                without.add(h);
+            without.remove(without.indexOf(c));
+            ArrayList<Integer> count = new ArrayList<>();
+            for(int j = 0; j < a.size(); j++){
+
+            }
+        }
     }
 }
