@@ -18,6 +18,7 @@ public class Day5Advent {
         }
         System.out.println(parameterInt + "\n" + orders);
         System.out.println(partOne(parameterInt,orders));
+        System.out.println(partTwo(parameterInt,orders));
 
     }
 
@@ -96,21 +97,32 @@ public class Day5Advent {
             for (String j : noComma) {
                 containNum.add(Integer.parseInt(j));
             }
-
+            if(!checkNum(a,containNum))
+                total += orderRight(a,containNum).get((orderRight(a,containNum).size() - 1) / 2);
         }
         return total;
     }
     public static ArrayList<Integer> orderRight(ArrayList<Integer> a, ArrayList<Integer> b){
+        ArrayList<Integer> count = new ArrayList<>();
         for(int i = 0; i < b.size(); i++){
             int c = b.get(i);
-            ArrayList<Integer> without = new ArrayList<>();
-            for(int h : b)
-                without.add(h);
-            without.remove(without.indexOf(c));
-            ArrayList<Integer> count = new ArrayList<>();
+            int counterPer = 0;
             for(int j = 0; j < a.size(); j++){
-
+                if(a.get(j) == c || j % 2 == 0)
+                    counterPer++;
             }
+            count.add(counterPer);
         }
+        ArrayList<Integer> newB = new ArrayList<>();
+        for(int k = 0; k < b.size(); k++){
+            int biggest = Integer.MIN_VALUE;
+            for(int l : b) {
+                if (biggest < l)
+                    biggest = l;
+            }
+            count.remove(count.indexOf(biggest));
+            newB.add(b.get(count.indexOf(biggest)));
+        }
+        return newB;
     }
 }
