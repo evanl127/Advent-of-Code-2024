@@ -108,21 +108,28 @@ public class Day5Advent {
             int c = b.get(i);
             int counterPer = 0;
             for(int j = 0; j < a.size(); j++){
-                if(a.get(j) == c || j % 2 == 0)
+                if(a.get(j) == c && j % 2 == 0)
                     counterPer++;
             }
             count.add(counterPer);
         }
         ArrayList<Integer> newB = new ArrayList<>();
-        for(int k = 0; k < b.size(); k++){
-            int biggest = Integer.MIN_VALUE;
-            for(int l : b) {
-                if (biggest < l)
-                    biggest = l;
-            }
-            count.remove(count.indexOf(biggest));
-            newB.add(b.get(count.indexOf(biggest)));
+
+        int biggest = -1;
+        for(int l : count) {
+            if (biggest < l)
+                biggest = l;
         }
+        System.out.println(count.indexOf(biggest));
+        newB.add(b.get(count.indexOf(biggest)));
+        for(int k = 0; k < b.size(); ){
+            for(int p : count)
+                if(biggest )
+            System.out.println(count.indexOf(biggest));
+            newB.add(b.get(count.indexOf(biggest)));
+
+        }
+        System.out.println(newB);
         return newB;
     }
 }
