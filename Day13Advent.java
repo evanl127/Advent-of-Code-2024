@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.channels.Channel;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,6 +9,7 @@ public class Day13Advent {
         ArrayList<String> fileData = getFileData("src/Day13Input");
         ArrayList<Game> games = parseGame(fileData);
         System.out.println(partOne(games));
+        System.out.println(partTwo(games));
     }
 
 
@@ -57,75 +59,141 @@ public class Day13Advent {
             long xCoord = temp.getxGoal();
             long yCoord = temp.getyGoal();
             long differenceB = xCoord * aChangeY - yCoord * aChangeX;
+            differenceB = Math.abs(differenceB);
             long changeDiffB = bChangeX * aChangeY - bChangeY * aChangeX;
-            long bTimes = differenceB / changeDiffB;
-            long aTimes = xCoord - (bTimes * bChangeX);
-            aTimes = aTimes/aChangeX;
-            tokens += (int) (aTimes * 3 + bTimes);
+            changeDiffB = Math.abs(changeDiffB);
+            long differenceA = xCoord * bChangeY - yCoord * bChangeX;
+            differenceA = Math.abs(differenceA);
+            long changeDiffA = aChangeX * bChangeY - aChangeY * bChangeX;
+            changeDiffA = Math.abs(changeDiffA);
+            if(differenceB % changeDiffB == 0 && (differenceB / changeDiffB <= 100)) {
+                long bTimes1 = differenceB / changeDiffB;
+                long aTimes1 = xCoord - (bTimes1 * bChangeX);
+                aTimes1 = aTimes1 / aChangeX;
+                tokens += (int) (aTimes1 * 3 + bTimes1);
+            }
+            else if(differenceA % changeDiffA == 0 && (differenceA / changeDiffA <= 100)){
+                long aTimes2 = differenceA % changeDiffA;
+                long bTimes2 = xCoord - (aTimes2 * aChangeX);
+                bTimes2 = bTimes2 / bChangeX;
+                tokens += (int) (aTimes2 * 3 + bTimes2);
+                }
+
+
         }
         return tokens;
     }
+    public static long partTwo(ArrayList<Game> game){
+        long tokens = 0;
+        for(int i = 0; i < game.size(); i ++){
+            Game temp = game.get(i);
+            long aChangeX = temp.getA().getxChange();
+            long aChangeY = temp.getA().getyChange();
+            long bChangeX = temp.getB().getxChange();
+            long bChangeY = temp.getB().getyChange();
+            long xCoord = temp.getxGoal() + 10000000000000L;
+            long yCoord = temp.getyGoal() + 10000000000000L;
+            long differenceB = xCoord * aChangeY - yCoord * aChangeX;
+            differenceB = Math.abs(differenceB);
+            long changeDiffB = bChangeX * aChangeY - bChangeY * aChangeX;
+            changeDiffB = Math.abs(changeDiffB);
+            long differenceA = xCoord * bChangeY - yCoord * bChangeX;
+            differenceA = Math.abs(differenceA);
+            long changeDiffA = aChangeX * bChangeY - aChangeY * bChangeX;
+            changeDiffA = Math.abs(changeDiffA);
+            int dB = (int) (differenceB % changeDiffB);
+            int dA = (int) (differenceA % changeDiffA);
+            long bTimes1;
+            long aTimes1;
+            long aTimes2;
+            long bTimes2;
+            long tokenA = 0;
+            long tokenB = 0;
+            if(dB == 0){
+                bTimes1 = differenceB / changeDiffB;
+                aTimes1 = xCoord - (bTimes1 * bChangeX);
+                aTimes1 = aTimes1 / aChangeX;
+                tokenA = aTimes1 * 3 + bTimes1;
+            }
+            if(dA == 0){
+                aTimes2 = differenceA % changeDiffA;
+                bTimes2 = xCoord - (aTimes2 * aChangeX);
+                bTimes2 = bTimes2 / bChangeX;
+                tokenB = aTimes2 * 3 + bTimes2;
+            }
+            if(tokenA > tokenB)
+                tokens += tokenB;
+            else
+                tokens += tokenA;
+
+
+
+
+        }
+        return tokens;
+    }
+
 }
-    class Game {
-        private Button a;
-        private Button b;
-        private long xGoal;
-        private long yGoal;
+class Game {
+    private Button a;
+    private Button b;
+    private long xGoal;
+    private long yGoal;
 
-        public Game(Button a, Button b, long xGoal, long yGoal) {
-            this.a = a;
-            this.b = b;
-            this.xGoal = xGoal;
-            this.yGoal = yGoal;
-        }
-
-        public Button getA() {
-            return a;
-        }
-
-        public Button getB() {
-            return b;
-        }
-
-        public long getxGoal() {
-            return xGoal;
-        }
-
-        public long getyGoal() {
-            return yGoal;
-        }
-
-        public void setxGoal(long xGoal) {
-            this.xGoal = xGoal;
-        }
-
-        public void setyGoal(long yGoal) {
-            this.yGoal = yGoal;
-        }
-
-        public String toString() {
-            return a + "\n" + b + "\n" + "Prize: " + "X=" + xGoal + ", Y=" + yGoal;
-        }
+    public Game(Button a, Button b, long xGoal, long yGoal) {
+        this.a = a;
+        this.b = b;
+        this.xGoal = xGoal;
+        this.yGoal = yGoal;
     }
 
-    class Button {
-        private long xChange;
-        private long yChange;
-
-        public Button(long xChange, long yChange) {
-            this.xChange = xChange;
-            this.yChange = yChange;
-        }
-
-        public long getxChange() {
-            return xChange;
-        }
-
-        public long getyChange() {
-            return yChange;
-        }
-
-        public String toString() {
-            return "Button: " + "X+" + xChange + ", Y+" + yChange;
-        }
+    public Button getA() {
+        return a;
     }
+
+    public Button getB() {
+        return b;
+    }
+
+    public long getxGoal() {
+        return xGoal;
+    }
+
+    public long getyGoal() {
+        return yGoal;
+    }
+
+    public void setxGoal(long xGoal) {
+        this.xGoal = xGoal;
+    }
+
+    public void setyGoal(long yGoal) {
+        this.yGoal = yGoal;
+    }
+
+    public String toString() {
+        return a + "\n" + b + "\n" + "Prize: " + "X=" + xGoal + ", Y=" + yGoal;
+    }
+}
+
+class Button {
+    private long xChange;
+    private long yChange;
+
+    public Button(long xChange, long yChange) {
+        this.xChange = xChange;
+        this.yChange = yChange;
+    }
+
+    public long getxChange() {
+        return xChange;
+    }
+
+    public long getyChange() {
+        return yChange;
+    }
+
+    public String toString() {
+        return "Button: " + "X+" + xChange + ", Y+" + yChange;
+    }
+}
