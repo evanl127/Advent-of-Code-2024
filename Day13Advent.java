@@ -93,40 +93,12 @@ public class Day13Advent {
             long bChangeY = temp.getB().getyChange();
             long xCoord = temp.getxGoal() + 10000000000000L;
             long yCoord = temp.getyGoal() + 10000000000000L;
-            long differenceB = xCoord * aChangeY - yCoord * aChangeX;
-            differenceB = Math.abs(differenceB);
-            long changeDiffB = bChangeX * aChangeY - bChangeY * aChangeX;
-            changeDiffB = Math.abs(changeDiffB);
-            long differenceA = xCoord * bChangeY - yCoord * bChangeX;
-            differenceA = Math.abs(differenceA);
-            long changeDiffA = aChangeX * bChangeY - aChangeY * bChangeX;
-            changeDiffA = Math.abs(changeDiffA);
-            int dB = (int) (differenceB % changeDiffB);
-            int dA = (int) (differenceA % changeDiffA);
-            long bTimes1;
-            long aTimes1;
-            long aTimes2;
-            long bTimes2;
-            long tokenA = 0;
-            long tokenB = 0;
-            if(dB == 0){
-                bTimes1 = differenceB / changeDiffB;
-                aTimes1 = xCoord - (bTimes1 * bChangeX);
-                aTimes1 = aTimes1 / aChangeX;
-                tokenA = aTimes1 * 3 + bTimes1;
+            long bTimes = (xCoord*aChangeY-yCoord*aChangeX)/(aChangeY*bChangeX-bChangeY*aChangeX);
+            long aTimes = (xCoord*bChangeY-yCoord*bChangeX)/(bChangeY*aChangeX-bChangeX*aChangeY);
+            if(aTimes * aChangeX + bChangeX * bTimes == xCoord && aTimes * aChangeY + bChangeY * bTimes == yCoord) {
+                tokens += (aTimes * 3 + bTimes);
+                System.out.println(i);
             }
-            if(dA == 0){
-                aTimes2 = differenceA % changeDiffA;
-                bTimes2 = xCoord - (aTimes2 * aChangeX);
-                bTimes2 = bTimes2 / bChangeX;
-                tokenB = aTimes2 * 3 + bTimes2;
-            }
-            if(tokenA > tokenB)
-                tokens += tokenB;
-            else
-                tokens += tokenA;
-
-
 
 
         }
